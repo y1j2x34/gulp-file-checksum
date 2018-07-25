@@ -74,7 +74,13 @@ const gulpFileChecksum = function gulpFileChecksum(options) {
 
         cb();
     }
-    return through.obj(transform);
+    return through.obj(async function(){
+        try {
+            return await transform.apply(this, arguments);
+        } catch (error) {
+            this.emit('error', new PluginError(PLUGIN_NAME, error));
+        }
+    });
 };
 
 function register(type, algorithm) {
