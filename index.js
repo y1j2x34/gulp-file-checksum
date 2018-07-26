@@ -5,8 +5,10 @@ const through = require('through2');
 const PluginError = require('plugin-error');
 const package = require('./package.json');
 const TemplateParser = require('./lib/Template');
-const algorithms = require('./lib/algorithms');
+const Defer = require('./lib/defer');
 const PLUGIN_NAME = package.name;
+
+const globalPlugins = require('./lib/plugins');
 
 const gulpFileChecksum = function gulpFileChecksum(options) {
 
@@ -14,49 +16,40 @@ const gulpFileChecksum = function gulpFileChecksum(options) {
         template,
         prefix,
         suffix,
-        output
+        output,
+        plugins
     } = Object.assign(options || {});
+
+    const allPlugins = globalPlugins.concat(plugins || []);
 
     const parser = new TemplateParser(prefix || '{', suffix || '}', true);
 
     const parsedTemplate = parser.parse(template);
 
-    async function transform(file, enc, cb) {
-        // ignore empty files
-        if (file.isNull()) {
-            return cb();
-        }
-        let temporary;
-        if(file.isStream()) {
-            temporary = tmp.fileSync({
-                discardDescriptor: true
-            });
-            file.contents.pipe(fs.createWriteStream(temporary.name))
-            await new Promise((resolve, reject) => {
-                file.contents.on('error', reject);
-                file.contents.on('end', resolve);
-            });
-        }
+    const keys = parsedTemplate.keys;
 
-        const context = {};
-        for (let [key, alg] of Object.entries(algorithms)) {
-            Object.defineProperty(context, key, {
-                get: () => {
-                    if(temporary) {
-                        file.contents = fs.createReadStream(temporary.name);
-                    }
-                    return alg(file, enc)
-                }
-            });
+    async function transform(file, enc, callback) {
+        if (file.isNull() || file.isDirectory()) {
+            callback();
+            return;
         }
-        
+        const pluginInstances = allPlugins
+            .map(PluginClass => new PluginClass(file, enc))
+            .filter(plugin => 
+                plugin.names.reduce((previous, name) => 
+                    previous || keys.indexOf(name) > -1, false
+                )
+            );
+
+        let context;
+        if (file.isStream()) {
+            context = await transformStream(file, pluginInstances);
+        } else {
+            context = await transformBuffer(file, pluginInstances);
+        }
         const result = await parsedTemplate.execute(context, key => {
             throw new PluginError(PLUGIN_NAME, `Unsupported placeholder type: ${key}`);
         });
-
-        if(temporary) {
-            temporary.removeCallback();
-        }
 
         if (file.isStream()) {
             const stream = through();
@@ -69,26 +62,49 @@ const gulpFileChecksum = function gulpFileChecksum(options) {
         if (typeof output === 'string') {
             file.path = path.join(file.base, output);
         }
-
         this.push(file);
 
-        cb();
+        callback();
     }
-    return through.obj(async function(){
+    return through.obj(async function () {
         try {
             return await transform.apply(this, arguments);
         } catch (error) {
+            console.error(error);
             this.emit('error', new PluginError(PLUGIN_NAME, error));
         }
     });
 };
 
-function register(type, algorithm) {
-    if (typeof handler === 'function') {
-        algorithms[type] = algorithm;
-    }
+function transformStream(file, plugins) {
+    file.contents.on('data', chunk =>
+        plugins.forEach(plugin => plugin.receiveChunk(chunk))
+    );
+    const defer = new Defer();
+    file.contents.on('end', () =>
+        defer.resolve(plugins.reduce((previous, plugin) => {
+            return mergeFrom(previous, plugin.finish());
+        }, {}))
+    );
+    return defer.promise;
 }
 
-gulpFileChecksum.register = register;
+function transformBuffer(file, plugins) {
+    return plugins.reduce((previous, plugin) => {
+        plugin.receiveChunk(file.contents);
+        return mergeFrom(previous, plugin.finish());
+    }, {});
+}
+
+function mergeFrom(dest, src) {
+    for (let key in src) {
+        dest[key] = src[key];
+    }
+    return dest;
+}
+
+gulpFileChecksum.addPlugin = pluginClass => {
+    globalPlugins.push(pluginClass);
+}
 
 module.exports = gulpFileChecksum;
