@@ -10,6 +10,8 @@ const PLUGIN_NAME = package.name;
 
 const globalPlugins = require('./lib/plugins');
 
+const OUTPUT_TEMPLATE_PARSER = new TemplateParser('{', '}', true);
+
 const gulpFileChecksum = function gulpFileChecksum(options) {
 
     const {
@@ -28,10 +30,9 @@ const gulpFileChecksum = function gulpFileChecksum(options) {
 
     const keys = parsedTemplate.keys;
 
-    async function transform(file, enc, callback) {
+    async function transform(file, enc) {
         if (file.isNull() || file.isDirectory()) {
-            callback();
-            return;
+            return file;
         }
         const pluginInstances = allPlugins
             .map(PluginClass => new PluginClass(file, enc))
@@ -60,18 +61,30 @@ const gulpFileChecksum = function gulpFileChecksum(options) {
         }
 
         if (typeof output === 'string') {
-            file.path = path.join(file.base, output);
+            const basename = path.basename(file.history[0]);
+            const extname = path.extname(file.history[0]);
+            const filename = basename.slice(0, basename.lastIndexOf(extname));
+            const outputname = await OUTPUT_TEMPLATE_PARSER.parse(output).execute({
+                basename,
+                extname,
+                filename
+            });
+            file.path = path.join(file.base, outputname);
         }
         this.push(file);
-
-        callback();
+        return file;
     }
-    return through.obj(async function () {
+    return through.obj(async function (file, enc, callback) {
         try {
-            return await transform.apply(this, arguments);
+            file = await transform.call(this, file, enc);
+            callback(null, file);
         } catch (error) {
-            console.error(error);
-            this.emit('error', new PluginError(PLUGIN_NAME, error));
+            if(!(error instanceof PluginError)) {
+                error = new PluginError(PLUGIN_NAME, error);
+            }
+            process.nextTick(() => {
+                callback(error, file);
+            })
         }
     });
 };
