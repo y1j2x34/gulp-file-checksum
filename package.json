@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "()",
   "main": "main.js",
+  "engines": {
+    "node": "8"
+  },
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
