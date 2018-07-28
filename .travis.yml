@@ -1,0 +1,19 @@
+language: node_js
+
+language: node_js
+
+notifications:
+    email:
+        recipents:
+            - y1j2x34@qq.com
+    on_success: change
+    on_failure: always
+
+node_js:
+    - "8"
+install:
+    - npm install
+
+script:
+    - npm run coverage
+    - npm run coveralls
