@@ -8,6 +8,7 @@ dependencies:
   vinyl: 2.2.0
 devDependencies:
   chai: 4.1.2
+  chai-spies: 1.0.0
   coveralls: 3.0.2
   eslint: 5.2.0
   eslint-config-standard: 11.0.0
@@ -18,7 +19,102 @@ devDependencies:
   istanbul: 0.4.5
   mocha: 5.2.0
   mock-fs: 4.5.0
+  nyc: 12.0.2
+  stream-assert: 2.0.3
 packages:
+  /@babel/code-frame/7.0.0-beta.51:
+    dependencies:
+      '@babel/highlight': 7.0.0-beta.51
+    dev: true
+    resolution:
+      integrity: sha1-vXHZsZKvl435FYKdOdQJRFZDmgw=
+      tarball: 'http://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.0.0-beta.51.tgz'
+  /@babel/generator/7.0.0-beta.51:
+    dependencies:
+      '@babel/types': 7.0.0-beta.51
+      jsesc: 2.5.1
+      lodash: 4.17.10
+      source-map: 0.5.7
+      trim-right: 1.0.1
+    dev: true
+    resolution:
+      integrity: sha1-bHV1/952HQdIXgS67cA5LG2eMPY=
+      tarball: 'http://registry.npm.taobao.org/@babel/generator/download/@babel/generator-7.0.0-beta.51.tgz'
+  /@babel/helper-function-name/7.0.0-beta.51:
+    dependencies:
+      '@babel/helper-get-function-arity': 7.0.0-beta.51
+      '@babel/template': 7.0.0-beta.51
+      '@babel/types': 7.0.0-beta.51
+    dev: true
+    resolution:
+      integrity: sha1-IbSHSiJ8+Z7K/MMKkDAtpaJkBWE=
+      tarball: 'http://registry.npm.taobao.org/@babel/helper-function-name/download/@babel/helper-function-name-7.0.0-beta.51.tgz'
+  /@babel/helper-get-function-arity/7.0.0-beta.51:
+    dependencies:
+      '@babel/types': 7.0.0-beta.51
+    dev: true
+    resolution:
+      integrity: sha1-MoGy0EWvlcFyzpGyCCXYXqRnZBE=
+      tarball: 'http://registry.npm.taobao.org/@babel/helper-get-function-arity/download/@babel/helper-get-function-arity-7.0.0-beta.51.tgz'
+  /@babel/helper-split-export-declaration/7.0.0-beta.51:
+    dependencies:
+      '@babel/types': 7.0.0-beta.51
+    dev: true
+    resolution:
+      integrity: sha1-imw/ZsTSZTUvwHdIT59ugKUauXg=
+      tarball: 'http://registry.npm.taobao.org/@babel/helper-split-export-declaration/download/@babel/helper-split-export-declaration-7.0.0-beta.51.tgz'
+  /@babel/highlight/7.0.0-beta.51:
+    dependencies:
+      chalk: 2.4.1
+      esutils: 2.0.2
+      js-tokens: 3.0.2
+    dev: true
+    resolution:
+      integrity: sha1-6IRK4loVlcz9QriWI7Q3bKBtIl0=
+      tarball: 'http://registry.npm.taobao.org/@babel/highlight/download/@babel/highlight-7.0.0-beta.51.tgz'
+  /@babel/parser/7.0.0-beta.51:
+    dev: true
+    engines:
+      node: '>=6.0.0'
+    hasBin: true
+    resolution:
+      integrity: sha1-J87C30Cd9gr1gnDtj2qlVAnqhvY=
+      tarball: 'http://registry.npm.taobao.org/@babel/parser/download/@babel/parser-7.0.0-beta.51.tgz'
+  /@babel/template/7.0.0-beta.51:
+    dependencies:
+      '@babel/code-frame': 7.0.0-beta.51
+      '@babel/parser': 7.0.0-beta.51
+      '@babel/types': 7.0.0-beta.51
+      lodash: 4.17.10
+    dev: true
+    resolution:
+      integrity: sha1-lgKkCuvPNXrpZ34lMu9fyBD1+/8=
+      tarball: 'http://registry.npm.taobao.org/@babel/template/download/@babel/template-7.0.0-beta.51.tgz'
+  /@babel/traverse/7.0.0-beta.51:
+    dependencies:
+      '@babel/code-frame': 7.0.0-beta.51
+      '@babel/generator': 7.0.0-beta.51
+      '@babel/helper-function-name': 7.0.0-beta.51
+      '@babel/helper-split-export-declaration': 7.0.0-beta.51
+      '@babel/parser': 7.0.0-beta.51
+      '@babel/types': 7.0.0-beta.51
+      debug: 3.1.0
+      globals: 11.7.0
+      invariant: 2.2.4
+      lodash: 4.17.10
+    dev: true
+    resolution:
+      integrity: sha1-mB2vLOw0emIx06odnhgDsDqqpKg=
+      tarball: 'http://registry.npm.taobao.org/@babel/traverse/download/@babel/traverse-7.0.0-beta.51.tgz'
+  /@babel/types/7.0.0-beta.51:
+    dependencies:
+      esutils: 2.0.2
+      lodash: 4.17.10
+      to-fast-properties: 2.0.0
+    dev: true
+    resolution:
+      integrity: sha1-2AK3tUO1g2x3iqaReXq/APPZfqk=
+      tarball: 'http://registry.npm.taobao.org/@babel/types/download/@babel/types-7.0.0-beta.51.tgz'
   /abbrev/1.0.9:
     dev: true
     resolution:
@@ -431,6 +527,15 @@ packages:
     resolution:
       integrity: sha1-qg0yYptu6XIgBBHL1EYckHvCt60=
       tarball: 'http://registry.npm.taobao.org/center-align/download/center-align-0.1.3.tgz'
+  /chai-spies/1.0.0:
+    dev: true
+    engines:
+      node: '>= 4.0.0'
+    peerDependencies:
+      chai: '*'
+    resolution:
+      integrity: sha1-0Ws5M2+zFtA6v4w3X+sjwMi7Fj0=
+      tarball: 'http://registry.npm.taobao.org/chai-spies/download/chai-spies-1.0.0.tgz'
   /chai/4.1.2:
     dependencies:
       assertion-error: 1.1.0
@@ -1836,6 +1941,13 @@ packages:
     resolution:
       integrity: sha1-ftGxQQxqDg94z5XTuEQMY/eLhhQ=
       tarball: 'http://registry.npm.taobao.org/interpret/download/interpret-1.1.0.tgz'
+  /invariant/2.2.4:
+    dependencies:
+      loose-envify: 1.4.0
+    dev: true
+    resolution:
+      integrity: sha1-YQ88ksk1nOHbYW5TgAjSP/NRWOY=
+      tarball: 'http://registry.npm.taobao.org/invariant/download/invariant-2.2.4.tgz'
   /is-absolute/1.0.0:
     dependencies:
       is-relative: 1.0.0
@@ -2105,6 +2217,28 @@ packages:
     resolution:
       integrity: sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
       tarball: 'http://registry.npm.taobao.org/isstream/download/isstream-0.1.2.tgz'
+  /istanbul-lib-coverage/2.0.1:
+    dev: true
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha1-Ku4OBzrYxfagsA4N+/UrRmdHLto=
+      tarball: 'http://registry.npm.taobao.org/istanbul-lib-coverage/download/istanbul-lib-coverage-2.0.1.tgz'
+  /istanbul-lib-instrument/2.3.2:
+    dependencies:
+      '@babel/generator': 7.0.0-beta.51
+      '@babel/parser': 7.0.0-beta.51
+      '@babel/template': 7.0.0-beta.51
+      '@babel/traverse': 7.0.0-beta.51
+      '@babel/types': 7.0.0-beta.51
+      istanbul-lib-coverage: 2.0.1
+      semver: 5.5.0
+    dev: true
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha1-sofLritfZfNWewXi4psnXq+S0l4=
+      tarball: 'http://registry.npm.taobao.org/istanbul-lib-instrument/download/istanbul-lib-instrument-2.3.2.tgz'
   /istanbul/0.4.5:
     dependencies:
       abbrev: 1.0.9
@@ -2130,6 +2264,11 @@ packages:
     resolution:
       integrity: sha1-mGbfOVECEw449/mWvOtlRDIJwls=
       tarball: 'http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.2.tgz'
+  /js-tokens/4.0.0:
+    dev: true
+    resolution:
+      integrity: sha1-GSA/tZmR35jjoocFDUZHzerzJJk=
+      tarball: 'http://registry.npm.taobao.org/js-tokens/download/js-tokens-4.0.0.tgz'
   /js-yaml/3.12.0:
     dependencies:
       argparse: 1.0.10
@@ -2144,6 +2283,14 @@ packages:
     resolution:
       integrity: sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
       tarball: 'http://registry.npm.taobao.org/jsbn/download/jsbn-0.1.1.tgz'
+  /jsesc/2.5.1:
+    dev: true
+    engines:
+      node: '>=4'
+    hasBin: true
+    resolution:
+      integrity: sha1-5CGiqOINawgZ3yiQj3glJrlt0f4=
+      tarball: 'http://registry.npm.taobao.org/jsesc/download/jsesc-2.5.1.tgz'
   /json-schema-traverse/0.3.1:
     dev: true
     resolution:
@@ -2379,6 +2526,14 @@ packages:
     resolution:
       integrity: sha1-MKCy2jj3N3DoKUoNIuZiXtd9AJc=
       tarball: 'http://registry.npm.taobao.org/longest/download/longest-1.0.1.tgz'
+  /loose-envify/1.4.0:
+    dependencies:
+      js-tokens: 4.0.0
+    dev: true
+    hasBin: true
+    resolution:
+      integrity: sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
+      tarball: 'http://registry.npm.taobao.org/loose-envify/download/loose-envify-1.4.0.tgz'
   /lru-cache/2.7.3:
     dev: true
     resolution:
@@ -2599,6 +2754,41 @@ packages:
     resolution:
       integrity: sha1-MtDkcvkf80VwHBWoMRAY07CpA3k=
       tarball: 'http://registry.npm.taobao.org/normalize-path/download/normalize-path-1.0.0.tgz'
+  /nyc/12.0.2:
+    bundledDependencies:
+      - archy
+      - arrify
+      - caching-transform
+      - convert-source-map
+      - debug-log
+      - default-require-extensions
+      - find-cache-dir
+      - find-up
+      - foreground-child
+      - glob
+      - istanbul-lib-coverage
+      - istanbul-lib-hook
+      - istanbul-lib-report
+      - istanbul-lib-source-maps
+      - istanbul-reports
+      - md5-hex
+      - merge-source-map
+      - micromatch
+      - mkdirp
+      - resolve-from
+      - rimraf
+      - signal-exit
+      - spawn-wrap
+      - test-exclude
+      - yargs
+      - yargs-parser
+    dependencies:
+      istanbul-lib-instrument: 2.3.2
+    dev: true
+    hasBin: true
+    resolution:
+      integrity: sha1-ikpO1pCWbBHsWH/4fuoMEsl0upk=
+      tarball: 'http://registry.npm.taobao.org/nyc/download/nyc-12.0.2.tgz'
   /oauth-sign/0.8.2:
     dev: true
     resolution:
@@ -3176,6 +3366,7 @@ packages:
       tarball: 'http://registry.npm.taobao.org/semver/download/semver-4.3.6.tgz'
   /semver/5.5.0:
     dev: true
+    hasBin: true
     resolution:
       integrity: sha1-3Eu8emyp2Rbe5dQ1FvAJK1j3uKs=
       tarball: 'http://registry.npm.taobao.org/semver/download/semver-5.5.0.tgz'
@@ -3372,6 +3563,13 @@ packages:
     resolution:
       integrity: sha1-YICcOcv/VTNyJv1eC1IPNB8ftcY=
       tarball: 'http://registry.npm.taobao.org/static-extend/download/static-extend-0.1.2.tgz'
+  /stream-assert/2.0.3:
+    dependencies:
+      through2: 0.6.5
+    dev: true
+    resolution:
+      integrity: sha1-G6ijS2feoGsA7jkmHKYEFDcjPjI=
+      tarball: 'http://registry.npm.taobao.org/stream-assert/download/stream-assert-2.0.3.tgz'
   /stream-consume/0.1.1:
     dev: true
     resolution:
@@ -3547,6 +3745,13 @@ packages:
     resolution:
       integrity: sha1-bTQzWIl2jSGyvNoKonfO07G/rfk=
       tarball: 'http://registry.npm.taobao.org/tmp/download/tmp-0.0.33.tgz'
+  /to-fast-properties/2.0.0:
+    dev: true
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=
+      tarball: 'http://registry.npm.taobao.org/to-fast-properties/download/to-fast-properties-2.0.0.tgz'
   /to-object-path/0.3.0:
     dependencies:
       kind-of: 3.2.2
@@ -3587,6 +3792,13 @@ packages:
     resolution:
       integrity: sha1-7GDO44rGdQY//JelwYlwV47oNlU=
       tarball: 'http://registry.npm.taobao.org/tough-cookie/download/tough-cookie-2.3.4.tgz'
+  /trim-right/1.0.1:
+    dev: true
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+      tarball: 'http://registry.npm.taobao.org/trim-right/download/trim-right-1.0.1.tgz'
   /tunnel-agent/0.6.0:
     dependencies:
       safe-buffer: 5.1.2
@@ -3848,6 +4060,7 @@ shrinkwrapMinorVersion: 7
 shrinkwrapVersion: 3
 specifiers:
   chai: ^4.1.2
+  chai-spies: ^1.0.0
   coveralls: ^3.0.2
   crc: ^3.7.0
   crypto-js: ^3.1.9-1
@@ -3860,8 +4073,10 @@ specifiers:
   istanbul: ^0.4.5
   mocha: ^5.2.0
   mock-fs: ^4.5.0
+  nyc: ^12.0.2
   plugin-error: ^1.0.1
   require-dir: ^1.0.0
+  stream-assert: ^2.0.3
   through2: ^2.0.3
   tmp: ^0.0.33
   vinyl: ^2.2.0
