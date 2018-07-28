@@ -17,14 +17,10 @@ describe('gulp-file-checksum', () => {
     function mockFiles () {
         mock({
             '.nyc_output': {},
-            '/home': {
+            '/mock_home': {
                 profile: 'profile content',
                 empty: ''
-            },
-            '/other': {
-                casual: 'casual content'
-            },
-            '/output': {}
+            }
         });
     }
 
@@ -34,7 +30,7 @@ describe('gulp-file-checksum', () => {
     describe('template syntax', () => {
         it('shoud emit error on unsupported placeholder', done => {
             const spy = chai.spy(function onerror () {});
-            gulp.src('/home/profile')
+            gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
                         template: '{md10086}'
@@ -56,7 +52,7 @@ describe('gulp-file-checksum', () => {
         stream.end();
     });
     describe('output', done => {
-        gulp.src('/home/profile')
+        gulp.src('/mock_home/profile')
             .pipe(
                 fileChecksum({
                     template: '{md5}'
@@ -72,19 +68,19 @@ describe('gulp-file-checksum', () => {
     });
     describe('placeholders', () => {
         it('should calculate the md5 correct', done => {
-            gulp.src('/home/profile')
+            gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
                         template: '{md5}',
                         output: '{filename}_checksum.txt'
                     })
                 )
-                .pipe(gulp.dest('/home/'))
+                .pipe(gulp.dest('/mock_home/'))
                 .pipe(assert.length(1))
                 .pipe(
                     assert.end(function () {
                         const profilemd5 = fs
-                            .readFileSync('/home/profile_checksum.txt')
+                            .readFileSync('/mock_home/profile_checksum.txt')
                             .toString();
                         expect(profilemd5).to.eql(
                             '7921424f200373ecfe9be345758ebaa4'
@@ -94,19 +90,19 @@ describe('gulp-file-checksum', () => {
                 );
         });
         it('should calculate the crc32 correct', done => {
-            gulp.src('/home/profile')
+            gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
                         template: '{crc32}',
                         output: '{filename}_checksum.txt'
                     })
                 )
-                .pipe(gulp.dest('/home/'))
+                .pipe(gulp.dest('/mock_home/'))
                 .pipe(assert.length(1))
                 .pipe(
                     assert.end(function () {
                         const profilecrc32 = fs
-                            .readFileSync('/home/profile_checksum.txt')
+                            .readFileSync('/mock_home/profile_checksum.txt')
                             .toString();
                         expect(profilecrc32).to.eql('70279111');
                         done();
@@ -114,21 +110,21 @@ describe('gulp-file-checksum', () => {
                 );
         });
         it('size', done => {
-            gulp.src('/home/profile')
+            gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
                         template: '{size}',
                         output: '{filename}_checksum.txt'
                     })
                 )
-                .pipe(gulp.dest('/home/'))
+                .pipe(gulp.dest('/mock_home/'))
                 .pipe(assert.length(1))
                 .pipe(
                     assert.end(function () {
-                        const realsize = fs.statSync('/home/profile').size;
+                        const realsize = fs.statSync('/mock_home/profile').size;
                         const size = parseInt(
                             fs
-                                .readFileSync('/home/profile_checksum.txt')
+                                .readFileSync('/mock_home/profile_checksum.txt')
                                 .toString()
                         );
                         expect(size).to.be.eql(realsize);
@@ -137,19 +133,19 @@ describe('gulp-file-checksum', () => {
                 );
         });
         it('datetime', done => {
-            gulp.src('/home/profile')
+            gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
                         template: '{datetime}',
                         output: '{filename}_checksum.txt'
                     })
                 )
-                .pipe(gulp.dest('/home/'))
+                .pipe(gulp.dest('/mock_home/'))
                 .pipe(assert.length(1))
                 .pipe(
                     assert.end(function () {
                         const datetimestr = fs
-                            .readFileSync('/home/profile_checksum.txt')
+                            .readFileSync('/mock_home/profile_checksum.txt')
                             .toString();
                         const now = new Date()
                             .toLocaleString()
@@ -181,7 +177,7 @@ describe('gulp-file-checksum', () => {
                 expect(error.message).to.be.eql(ERROR_MESSAGE);
                 done();
             });
-            gulp.src('/home/profile')
+            gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
                         template: '{throw}',
