@@ -12,12 +12,12 @@
     ],
     "rules": {
         "indent": ["error", 4, {"SwitchCase": 1}],
-        "quotes": ["error", "single"],
         "semi": ["error", "always"],
         "no-empty": "error",
         "no-new": "error",
         "no-var": "error",
         "no-fallthrough": "off",
-        "no-unreachable": "off"
+        "no-unreachable": "off",
+        "no-useless-constructor":"off"
     }
 }
