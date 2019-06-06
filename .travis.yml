@@ -12,7 +12,7 @@ node_js:
     - "9"
     - "10"
 
-before-install:
+before_install:
   - node_version=$(node -v)
   - if [ ${node_version:1:2} = 10 ]; then npm install --save-dev natives@1.1.6; fi
 
