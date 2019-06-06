@@ -1,7 +1,5 @@
 language: node_js
 
-language: node_js
-
 notifications:
     email:
         recipents:
@@ -11,6 +9,8 @@ notifications:
 
 node_js:
     - "8"
+    - "9"
+    - "10"
 install:
     - npm install
 
