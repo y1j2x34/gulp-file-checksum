@@ -4,7 +4,7 @@
   "description": "A gulp plugin for generating checksum file.",
   "main": "main.js",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.0.0 <=10.0.0"
   },
   "scripts": {
     "test": "mocha",
@@ -64,6 +64,7 @@
     "lint-staged": "^7.2.0",
     "mocha": "^5.2.0",
     "mock-fs": "^4.5.0",
+    "natives": "^1.1.6",
     "nyc": "^12.0.2",
     "prettier": "^1.13.7",
     "prettier-eslint-cli": "^4.7.1",
@@ -74,7 +75,7 @@
     "crypto-js": "^3.1.9-1",
     "plugin-error": "^1.0.1",
     "require-dir": "^1.0.0",
-    "through2": "^2.0.3",
+    "through2": "^2.0.5",
     "tmp": "^0.0.33",
     "vinyl": "^2.2.0"
   },

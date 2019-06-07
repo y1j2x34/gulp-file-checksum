@@ -10,7 +10,7 @@ notifications:
 node_js:
     - "8"
     - "9"
-    - "10"
+    - "10.0.0"
 
 before_install:
   - node_version=$(node -v)
