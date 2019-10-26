@@ -30,6 +30,7 @@ describe('gulp-file-checksum', () => {
     describe('template syntax', () => {
         it('shoud emit error on unsupported placeholder', done => {
             const spy = chai.spy(function onerror () {});
+
             gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
@@ -51,23 +52,30 @@ describe('gulp-file-checksum', () => {
         stream.write(new Vinyl());
         stream.end();
     });
-    describe('output', done => {
-        gulp.src('/mock_home/profile')
-            .pipe(
-                fileChecksum({
-                    template: '{md5}'
-                })
-            )
-            .pipe(assert.length(1))
-            .pipe(
-                assert.first(file => {
-                    console.info(file.path);
-                })
-            )
-            .pipe(assert.end(done));
+    describe('test stream', () => {
+        it('should generates a correct stream', done => {
+            gulp.src('/mock_home/profile')
+                .pipe(
+                    fileChecksum({
+                        template: '{md5}'
+                    })
+                )
+                .pipe(assert.length(1))
+                .pipe(
+                    assert.first(file => {
+                        console.info(file.path);
+                    })
+                )
+                .pipe(
+                    assert.end(data => {
+                        console.info(data);
+                        done();
+                    })
+                );
+        });
     });
     describe('placeholders', () => {
-        it('should calculate the md5 correct', done => {
+        it('should "md5" plugin work correctly', done => {
             gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
@@ -89,7 +97,7 @@ describe('gulp-file-checksum', () => {
                     })
                 );
         });
-        it('should calculate the crc32 correct', done => {
+        it('should "crc32" plugin work correctly', done => {
             gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
@@ -132,7 +140,7 @@ describe('gulp-file-checksum', () => {
                     })
                 );
         });
-        it('datetime', done => {
+        it('should "datetime" plugin work correctly', done => {
             gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
@@ -162,7 +170,7 @@ describe('gulp-file-checksum', () => {
         before(() => {
             fileChecksum.addPlugin(
                 class ThrowError {
-                    get names () {
+                    static get names () {
                         return ['throw'];
                     }
                     receiveChunk () {

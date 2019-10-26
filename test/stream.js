@@ -7,11 +7,10 @@ const fileChecksum = require('../main');
 const chai = require('chai');
 const { expect } = chai;
 
-mock.restore();
-
 describe('test stream', () => {
     let tmpfile, tmpdir, streamChecksum, bufferChecksum;
     before(() => {
+        mock.restore();
         tmpfile = tmp.fileSync();
         tmpdir = tmp.dirSync();
         streamChecksum = path.resolve(tmpdir.name, 'streamChecksum.txt');
