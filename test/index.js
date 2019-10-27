@@ -141,6 +141,16 @@ describe('gulp-file-checksum', () => {
                 );
         });
         it('should "datetime" plugin work correctly', done => {
+            const nowDatetime = new Date();
+            const OriginDate = Date;
+            global.Date = class extends OriginDate {
+                constructor () {
+                    if (arguments.length === 0) {
+                        return nowDatetime;
+                    }
+                    super(...arguments);
+                }
+            };
             gulp.src('/mock_home/profile')
                 .pipe(
                     fileChecksum({
@@ -155,10 +165,11 @@ describe('gulp-file-checksum', () => {
                         const datetimestr = fs
                             .readFileSync('/mock_home/profile_checksum.txt')
                             .toString();
-                        const now = new Date()
+                        const now = nowDatetime
                             .toLocaleString()
                             .replace(/\b(?=\d\b)/g, '0');
                         expect(datetimestr).to.be.eql(now);
+                        global.Date = OriginDate;
                         done();
                     })
                 );
