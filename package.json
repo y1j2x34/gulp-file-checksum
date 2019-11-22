@@ -1,6 +1,6 @@
 {
   "name": "gulp-file-checksum",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "A gulp plugin for generating checksum file.",
   "main": "main.js",
   "engines": {
@@ -74,6 +74,7 @@
     "crypto-js": "^3.1.9-1",
     "plugin-error": "^1.0.1",
     "require-dir": "^1.0.0",
+    "shelljs": "^0.8.3",
     "through2": "^2.0.5",
     "tmp": "^0.0.33",
     "vinyl": "^2.2.0"

@@ -11,12 +11,12 @@ const spies = require('chai-spies');
 
 chai.use(spies);
 
-const fileChecksum = require('../main');
-
 describe('gulp-file-checksum', () => {
+    const fileChecksum = require('../main');
     function mockFiles () {
         mock({
             '.nyc_output': {},
+            '/tmp': {},
             '/mock_home': {
                 profile: 'profile content',
                 empty: ''
@@ -24,8 +24,21 @@ describe('gulp-file-checksum', () => {
         });
     }
 
-    beforeEach(mockFiles);
-    afterEach(mock.restore);
+    before(mockFiles);
+    after(mock.restore);
+
+    afterEach(() => {
+        if (fs.existsSync('/mock_home/profile_checksum.txt')) {
+            fs.unlinkSync('/mock_home/profile_checksum.txt');
+        }
+        if (fs.existsSync('/.nyc_output')) {
+            fs.renameSync(
+                '/.nyc_output',
+                Math.floor(Math.random() * Date.now()).toString(16)
+            );
+            fs.mkdirSync('/.nyc_output');
+        }
+    });
 
     describe('template syntax', () => {
         it('shoud emit error on unsupported placeholder', done => {
