@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const moment = require('moment');
 const mock = require('mock-fs');
 const assert = require('stream-assert');
 const Vinyl = require('vinyl');
@@ -219,6 +219,59 @@ describe('gulp-file-checksum', () => {
                 .on('error', spy);
 
             expect(spy).to.be.called;
+        });
+        it('should parse the custom placeholder correctly', done => {
+            gulp.src('/mock_home/profile')
+                .pipe(
+                    fileChecksum({
+                        template: `{time:YYYY-MM-DD HH:mm:ss A}`,
+                        output: '{filename}_checksum.txt',
+                        plugins: [
+                            class CustomTimePlugin {
+                                static get names () {
+                                    return ['time'];
+                                }
+                                constructor (file, gulpOptions, placeholder) {
+                                    this.placeholder = placeholder;
+                                    const firstColonIndex = placeholder.indexOf(
+                                        ':'
+                                    );
+                                    if (firstColonIndex > -1) {
+                                        this.format = placeholder.substring(
+                                            firstColonIndex + 1
+                                        );
+                                    } else {
+                                        this.format = 'YYYY-MM-DDTHH:mm:ss.SSS'; // default format
+                                    }
+                                }
+                                preprocess (template) {
+                                    //
+                                }
+                                receiveChunk (chunk) {
+                                    // ignore
+                                }
+                                finish () {
+                                    return {
+                                        [this.placeholder]: moment(
+                                            1588609103564
+                                        ).format(this.format)
+                                    };
+                                }
+                            }
+                        ]
+                    })
+                )
+                .pipe(gulp.dest('/mock_home/'))
+                .pipe(assert.length(1))
+                .pipe(
+                    assert.end(function () {
+                        const datetimestr = fs
+                            .readFileSync('/mock_home/profile_checksum.txt')
+                            .toString();
+                        expect(datetimestr).to.be.eql('2020-05-05 00:18:23 AM');
+                        done();
+                    })
+                );
         });
     });
 });

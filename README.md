@@ -54,8 +54,19 @@ Datetime: 2018-07-28 21:48:34
     1. md5,sha1,sha256,sha512 etc. \- All hash algorithms are provided by [crypto](https://www.npmjs.com/package/crypto)
     2. crc1,crc8,crc24,crc32 etc. \- All crc algorithms are provided by [crc](https://www.npmjs.com/package/crc)
     3. size \- File size in bytes
-    4. datetime \- `new Date().toLocaleString()`
-    5. run \- Run unix shell commands via [shelljs](https://www.npmjs.com/package/shelljs) and get the results
+    4. datetime \- `{datetime:YYYY-MM-DD HH:mm:ss A}`, The time format please refer to the [documentation of momentjs](https://momentjs.com/docs/#/displaying/)
+    5. run \- Run unix shell commands defined in `shellCommand` option via [shelljs](https://www.npmjs.com/package/shelljs) and get the results:
+
+        ```js
+        fileChecksum({
+            template: `{run:git-revision}`,
+            shellCommands: {
+                'git-revision': `
+                    git rev-parse --short HEAD
+                `
+            }
+        })
+        ```
 
 - `prefix` & `suffix` - string [optional]
 
