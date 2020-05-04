@@ -178,9 +178,7 @@ describe('gulp-file-checksum', () => {
                         const datetimestr = fs
                             .readFileSync('/mock_home/profile_checksum.txt')
                             .toString();
-                        const now = nowDatetime
-                            .toLocaleString()
-                            .replace(/\b(?=\d\b)/g, '0');
+                        const now = moment().format('YYYY-MM-DD LTS');
                         expect(datetimestr).to.be.eql(now);
                         global.Date = OriginDate;
                         done();
