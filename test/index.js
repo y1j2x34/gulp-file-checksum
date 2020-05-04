@@ -252,7 +252,9 @@ describe('gulp-file-checksum', () => {
                                     return {
                                         [this.placeholder]: moment(
                                             1588609103564
-                                        ).format(this.format)
+                                        )
+                                            .utcOffset(0)
+                                            .format(this.format)
                                     };
                                 }
                             }
@@ -266,7 +268,7 @@ describe('gulp-file-checksum', () => {
                         const datetimestr = fs
                             .readFileSync('/mock_home/profile_checksum.txt')
                             .toString();
-                        expect(datetimestr).to.be.eql('2020-05-05 00:18:23 AM');
+                        expect(datetimestr).to.be.eql('2020-05-04 16:18:23 PM');
                         done();
                     })
                 );
