@@ -24,11 +24,15 @@ jobs:
         steps:
           - name: CHECK-OUT GIT REPOSITORY
             uses: actions/checkout@v2
-          - name: INSTALL PROJECT DEPENDENCIES
-            run: npm install
           - name: Test
             uses: actions/setup-node@v1
             with:
                 node-version: ${{ matrix.node-version }}
-          - run: npm run coverage
-          - run: npm run coveralls
+          - run: |
+                npm install
+                make test-coverage
+                npm run coverage
+          - name: Coveralls
+            uses: coverallsapp/github-action@master
+            with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
