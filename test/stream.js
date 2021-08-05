@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const mock = require('mock-fs');
 const tmp = require('tmp');
 const gulp = require('gulp');
 const fileChecksum = require('../main');
@@ -10,7 +9,6 @@ const { expect } = chai;
 describe('test stream', () => {
     let tmpfile, tmpdir, streamChecksum, bufferChecksum;
     before(() => {
-        mock.restore();
         tmpfile = tmp.fileSync();
         tmpdir = tmp.dirSync();
         streamChecksum = path.resolve(tmpdir.name, 'streamChecksum.txt');

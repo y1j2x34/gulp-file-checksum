@@ -1,36 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const gulp = require('gulp');
-const assert = require('stream-assert');
 const fileChecksum = require('../main');
 const { expect } = require('chai');
+const common = require('./common');
+const assert = require('stream-assert');
 
 describe('shell command placeholder', () => {
-    const tempdirname = path.resolve('shell_test_' + Date.now().toString(16));
-    const emptyfilename = path.resolve(tempdirname, 'empty');
-    before(() => {
-        fs.mkdirSync(tempdirname);
-        fs.writeFileSync(emptyfilename, '');
-    });
-    after(() => {
-        let rmdirs = filepath => {
-            const stat = fs.statSync(filepath);
-            if (stat.isFile()) {
-                fs.unlinkSync(filepath);
-            } else {
-                const subfiles = fs.readdirSync(filepath);
-                subfiles.forEach(fname =>
-                    rmdirs(path.resolve(filepath, fname))
-                );
-                fs.rmdirSync(filepath);
-            }
-        };
-        rmdirs(tempdirname);
-    });
     it('shoud "shell" command plugin work correctly', done => {
-        gulp.src(emptyfilename, {
-            allowEmpty: true
-        })
+        const emptyFile = common.file('');
+        emptyFile
             .pipe(
                 fileChecksum({
                     template: '{shell:show-revision}',
@@ -40,18 +16,13 @@ describe('shell command placeholder', () => {
                     }
                 })
             )
-            .pipe(gulp.dest(tempdirname))
             .pipe(
-                assert.end(() => {
-                    const revisionInfo = fs
-                        .readFileSync(
-                            path.resolve(tempdirname, 'empty_checksum.txt')
-                        )
-                        .toString();
+                assert.first(file => {
+                    const revisionInfo = file.contents.toString('utf8');
                     expect(revisionInfo).to.be.string;
                     expect(revisionInfo).to.be.match(/^[0-9a-f]{7}$/);
-                    done();
                 })
-            );
+            )
+            .pipe(assert.end(done));
     });
 });
