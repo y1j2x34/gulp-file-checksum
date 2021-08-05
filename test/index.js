@@ -97,7 +97,7 @@ describe('gulp-file-checksum', () => {
                 )
                 .pipe(assert.end(done));
         });
-        it.only('should "size" plugin work correctly', done => {
+        it('should "size" plugin work correctly', done => {
             test()
                 .pipe(
                     fileChecksum({
