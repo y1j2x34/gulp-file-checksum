@@ -2,6 +2,7 @@ const fileChecksum = require('../main');
 const { expect } = require('chai');
 const common = require('./common');
 const assert = require('stream-assert');
+const ShellCommandPlugin = require('../lib/plugins/shell');
 
 describe('shell command placeholder', () => {
     it('shoud "shell" command plugin work correctly', done => {
@@ -24,5 +25,12 @@ describe('shell command placeholder', () => {
                 })
             )
             .pipe(assert.end(done));
+    });
+    it('should "shell" command allows empty command', () => {
+        const file = common.file('');
+        const plugin = new ShellCommandPlugin(file, {}, 'shell:nonexistent');
+        expect(() => {
+            plugin.finish();
+        }).to.not.throw;
     });
 });

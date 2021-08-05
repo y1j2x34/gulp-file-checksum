@@ -146,6 +146,37 @@ describe('gulp-file-checksum', () => {
                 )
                 .pipe(assert.end(done));
         });
+        it('should "datetime" plugin properly format the Date object', done => {
+            const nowDatetime = new Date();
+            const OriginDate = Date;
+            global.Date = class extends OriginDate {
+                constructor () {
+                    if (arguments.length === 0) {
+                        return nowDatetime;
+                    }
+                    super(...arguments);
+                }
+            };
+            test()
+                .pipe(
+                    fileChecksum({
+                        template: '{datetime:YYYY-MM-DD HH:mm:ss}',
+                        output: '{filename}_checksum.txt'
+                    })
+                )
+                .pipe(assert.length(1))
+                .pipe(
+                    assert.first(function (file) {
+                        const datetimestr = file.contents.toString('utf8');
+                        const now = moment(nowDatetime).format(
+                            'YYYY-MM-DD HH:mm:ss'
+                        );
+                        expect(datetimestr).to.be.eql(now);
+                        global.Date = OriginDate;
+                    })
+                )
+                .pipe(assert.end(done));
+        });
     });
 
     describe('custom-placeholder', () => {
