@@ -70,7 +70,6 @@ describe('gulp-file-checksum', () => {
                 )
                 .pipe(
                     assert.first(file => {
-                        console.info(file);
                         const checksum = file.contents.toString('utf8');
                         expect(checksum).to.be.eql(
                             '7921424f200373ecfe9be345758ebaa4'
