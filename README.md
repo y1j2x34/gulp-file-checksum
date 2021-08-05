@@ -21,8 +21,8 @@ CRC32   : {crc32}
 size    : {size} Bytes
 Datetime: {dateime}
 `
-gulp.task('checksum',
-    gulp.src('dist/package.zip', {
+gulp.task('checksum',() => {
+    return gulp.src('dist/package.zip', {
         buffer: false // for large files
     })
     .pipe(fileChecksum({
@@ -30,7 +30,7 @@ gulp.task('checksum',
         output: '{filename}_checksum.txt'
     }))
     .pipe(gulp.dest('dist'))
-)
+})
 
 ```
 
