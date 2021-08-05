@@ -1,4 +1,4 @@
-# gulp-file-checksum [![Build Status](https://travis-ci.org/y1j2x34/gulp-file-checksum.svg?branch=master)](https://travis-ci.org/y1j2x34/gulp-file-checksum) [![Coverage Status](https://coveralls.io/repos/github/y1j2x34/gulp-file-checksum/badge.svg?branch=master)](https://coveralls.io/github/y1j2x34/gulp-file-checksum?branch=master)
+# gulp-file-checksum ![Github workflow](https://github.com/y1j2x34/gulp-file-checksum/actions/workflows/runtest.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/y1j2x34/gulp-file-checksum/badge.svg?branch=master)](https://coveralls.io/github/y1j2x34/gulp-file-checksum?branch=master)
 
 ## Installation
 
