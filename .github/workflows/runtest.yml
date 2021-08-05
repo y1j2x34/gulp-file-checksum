@@ -9,7 +9,7 @@ on:
             - "master"
 
 jobs:
-    build:
+    test:
         name: Node ${{ matrix.node }} on ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
 
