@@ -10,29 +10,42 @@ on:
 
 jobs:
     build:
-        runs-on: ubuntu-latest
+        name: Node ${{ matrix.node }} on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
 
         strategy:
           fail-fast: true
           matrix:
-            node_version:
-                - 8.x
-                - 10.x
-                - 12.x
-                - 14.x
-                - 16.x
+            node: [8,10,12,14,16]
+            os: [ubuntu-latest]
         steps:
-          - name: CHECK-OUT GIT REPOSITORY
+          - name: Clone repository
             uses: actions/checkout@v2
-          - name: Test
+
+          - name: Set Node.js version
             uses: actions/setup-node@v1
             with:
-                node-version: ${{ matrix.node-version }}
-          - run: |
-                npm install
-                make test-coverage
-                npm run coverage
+                node-version: ${{ matrix.node }}
+
+          - name: Install npm dependencies
+            run: npm install
+
+          - name: Run tests
+            run: npm run coverage
+
           - name: Coveralls
             uses: coverallsapp/github-action@master
             with:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
+                flag-name: ${{matrix.os}}-node-${{ matrix.node }}
+                parallel: true
+
+    finish:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+        - name: Coveralls Finished
+          uses: coverallsapp/github-action@master
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            parallel-finished: true
